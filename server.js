@@ -9,43 +9,36 @@ const write = (filePath, data) => {
     if (!Array.isArray(data)) {
       return reject('data must be array')
     }
-    fs.writeFile( filePath, JSON.stringify(data), (err) => {
+    fs.writeFile(filePath, JSON.stringify(data), (err) => {
       if(err){
-        return reject(err)
+        return reject(err);
       };
     })
   });
 }
+
 const read = (filePath) => {
-  return new Promise((resolce, reject) => {
+  return new Promise((resolve, reject) => {
     fs.readFile(filePath, (err, data) => {
       if (err) {
-        reject(err)
+        return reject(err)
       };
       let results;
       try {
         results = JSON.parse(data.toString());
         if (!Array.isArray(results)) {
-          return reject('data must be array')
-        };
+          return reject('data must be array');
+        }
       }
       catch(ex) {
         return reject(ex)
       };
-    })
-    resolve(results)
-  })
+      resolve(results)
+    });
+  });
 }
 
-write(FILE, [{name: 'moe'}, {name: 'larry'}] )
-  .then (()=> read(FILE))
-  .then (users => {
-    users.push({name: 'shep'});
-    return write(FILE, users);
-  })
-  .then (console.log('saved new name'))
-  .catch (ex => console.log(ex));
-
+//APPLICATION
 const app = express();
 
 app.get('/', (req, res, next) => {

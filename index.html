@@ -1,40 +1,55 @@
 <html>
   <head>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js'></script>
+      <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+      <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+      <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+      <script src='https://cdnjs.cloudflare.com/ajax/libs/react-router-dom/5.0.0/react-router-dom.js'></script>
   </head>
   <body>
     <div id='root'>
     </div>
     <script type='text/babel'>
+      const { HashRouter, Route, NavLink, Link } = ReactRouterDOM;
 
       class App extends React.Component {
         constructor(){
           super();
           this.state = {
-            data: 0,
+            products : ['Foo' , 'Bizz', 'Bar'],
           };
         };
-        componentDidMount(){
-          setInterval(() => {
-            axios.get('/api/data')
-              .then( response => response.data)
-              .then( data => this.setState ({data: data.random}))
-          }, 1000);
-        };
+        // componentDidMount(){
+        //   setInterval(() => {
+        //     axios.get('/api/data')
+        //       .then( response => response.data)
+        //       .then( data => this.setState ({data: data.random}))
+        //   }, 1000);
+        // };
         render() {
-          const {data} = this.state;
           return (
             <div>
               <hr/>
-              {data}
+                <NavBar />
               <hr/>
             </div>
           )
         };
     };
+
+    class NavBar extends React.Component {
+      render() {
+        return(
+          <div>
+            <HashRouter>
+              <NavLink to='/'> Home </NavLink>
+              <NavLink to='/products'> Products </NavLink>
+              <NavLink to='/create'> Create A Product </NavLink>
+            </HashRouter>
+          </div>
+        )
+      }
+    }
 
       const root = document.querySelector('#root');
       ReactDOM.render(<App />, root);
